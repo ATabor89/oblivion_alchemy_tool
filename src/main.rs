@@ -1,23 +1,10 @@
-#[derive(Debug, PartialEq, Eq, Clone)]
-enum Attribute {
-    Strength,
-    Intelligence,
-    Willpower,
-    Agility,
-    Speed,
-    Endurance,
-    Personality,
-    Luck,
-}
+use strum::IntoEnumIterator; // 0.17.1
+use strum_macros::EnumIter; // 0.17.1
 
-#[derive(Debug, PartialEq, Eq, Clone)]
-enum DerivedAttribute {
-    Health,
-    Magicka,
-    Fatigue,
-}
+#[macro_use]
+extern crate lazy_static;
 
-#[derive(Debug, PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, EnumIter)]
 enum Effect {
     Chameleon,
     CureDisease,
@@ -27,8 +14,17 @@ enum Effect {
     Dispel,
     Feather,
     FireShield,
-    FortifyAttribute(Attribute),
-    FortifyDerivedAttribute(DerivedAttribute),
+    FortifyStrength,
+    FortifyIntelligence,
+    FortifyWillpower,
+    FortifyAgility,
+    FortifySpeed,
+    FortifyEndurance,
+    FortifyPersonality,
+    FortifyLuck,
+    FortifyHealth,
+    FortifyMagicka,
+    FortifyFatigue,
     FrostShield,
     Invisibility,
     Light,
@@ -41,23 +37,140 @@ enum Effect {
     ResistParalysis,
     ResistPoison,
     ResistShock,
-    RestoreAttribute(Attribute),
-    RestoreDerivedAttribute(DerivedAttribute),
+    RestoreStrength,
+    RestoreIntelligence,
+    RestoreWillpower,
+    RestoreAgility,
+    RestoreSpeed,
+    RestoreEndurance,
+    RestorePersonality,
+    RestoreLuck,
+    RestoreHealth,
+    RestoreMagicka,
+    RestoreFatigue,
     Shield,
     ShockShield,
     WaterBreathing,
     WaterWalking,
     Burden,
-    DamageAttribute(Attribute),
-    DamageDerivedAttribute(DerivedAttribute),
-    DrainAttribute(Attribute),
-    DrainDerivedAttribute(DerivedAttribute),
+    DamageStrength,
+    DamageIntelligence,
+    DamageWillpower,
+    DamageAgility,
+    DamageSpeed,
+    DamageEndurance,
+    DamagePersonality,
+    DamageLuck,
+    DamageHealth,
+    DamageMagicka,
+    DamageFatigue,
+    DrainStrength,
+    DrainIntelligence,
+    DrainWillpower,
+    DrainAgility,
+    DrainSpeed,
+    DrainEndurance,
+    DrainPersonality,
+    DrainLuck,
+    DrainHealth,
+    DrainMagicka,
+    DrainFatigue,
     FireDamage,
     FrostDamage,
     Paralyze,
     ShockDamage,
     Silence,
     WeaknessToFire,
+}
+
+impl std::fmt::Display for Effect {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match *self {
+            Effect::Chameleon => write!(f, "Chameleon"),
+            Effect::CureDisease => write!(f, "Cure Disease"),
+            Effect::CureParalysis => write!(f, "Cure Paralysis"),
+            Effect::CurePoison => write!(f, "Cure Poison"),
+            Effect::DetectLife => write!(f, "Detect Life"),
+            Effect::Dispel => write!(f, "Dispel"),
+            Effect::Feather => write!(f, "Feather"),
+            Effect::FireShield => write!(f, "Fire Shield"),
+            Effect::FortifyStrength => write!(f, "Fortify Strength"),
+            Effect::FortifyIntelligence => write!(f, "Fortify Intelligence"),
+            Effect::FortifyWillpower => write!(f, "Fortify Willpower"),
+            Effect::FortifyAgility => write!(f, "Fortify Agility"),
+            Effect::FortifySpeed => write!(f, "Fortify Speed"),
+            Effect::FortifyEndurance => write!(f, "Fortify Endurance"),
+            Effect::FortifyPersonality => write!(f, "Fortify Personality"),
+            Effect::FortifyLuck => write!(f, "Fortify Luck"),
+            Effect::FortifyHealth => write!(f, "Fortify Health"),
+            Effect::FortifyMagicka => write!(f, "Fortify Magicka"),
+            Effect::FortifyFatigue => write!(f, "Fortify Fatigue"),
+            Effect::FrostShield => write!(f, "Frost Shield"),
+            Effect::Invisibility => write!(f, "Invisibility"),
+            Effect::Light => write!(f, "Light"),
+            Effect::NightEye => write!(f, "Night Eye"),
+            Effect::ReflectDamage => write!(f, "Reflect Damage"),
+            Effect::ReflectSpell => write!(f, "Reflect Spell"),
+            Effect::ResistDisease => write!(f, "Resist Disease"),
+            Effect::ResistFire => write!(f, "Resist Fire"),
+            Effect::ResistFrost => write!(f, "Resist Frost"),
+            Effect::ResistParalysis => write!(f, "Resist Paralysis"),
+            Effect::ResistPoison => write!(f, "Resist Poison"),
+            Effect::ResistShock => write!(f, "Resist Shock"),
+            Effect::RestoreStrength => write!(f, "Restore Strength"),
+            Effect::RestoreIntelligence => write!(f, "Restore Intelligence"),
+            Effect::RestoreWillpower => write!(f, "Restore Willpower"),
+            Effect::RestoreAgility => write!(f, "Restore Agility"),
+            Effect::RestoreSpeed => write!(f, "Restore Speed"),
+            Effect::RestoreEndurance => write!(f, "Restore Endurance"),
+            Effect::RestorePersonality => write!(f, "Restore Personality"),
+            Effect::RestoreLuck => write!(f, "Restore Luck"),
+            Effect::RestoreHealth => write!(f, "Restore Health"),
+            Effect::RestoreMagicka => write!(f, "Restore Magicka"),
+            Effect::RestoreFatigue => write!(f, "Restore Fatigue"),
+            Effect::Shield => write!(f, "Shield"),
+            Effect::ShockShield => write!(f, "Shock Shield"),
+            Effect::WaterBreathing => write!(f, "Water Breathing"),
+            Effect::WaterWalking => write!(f, "Water Walking"),
+            Effect::Burden => write!(f, "Burden"),
+            Effect::DamageStrength => write!(f, "Damage Strength"),
+            Effect::DamageIntelligence => write!(f, "Damage Intelligence"),
+            Effect::DamageWillpower => write!(f, "Damage Willpower"),
+            Effect::DamageAgility => write!(f, "Damage Agility"),
+            Effect::DamageSpeed => write!(f, "Damage Speed"),
+            Effect::DamageEndurance => write!(f, "Damage Endurance"),
+            Effect::DamagePersonality => write!(f, "Damage Personality"),
+            Effect::DamageLuck => write!(f, "Damage Luck"),
+            Effect::DamageHealth => write!(f, "Damage Health"),
+            Effect::DamageMagicka => write!(f, "Damage Magicka"),
+            Effect::DamageFatigue => write!(f, "Damage Fatigue"),
+            Effect::DrainStrength => write!(f, "Drain Strength"),
+            Effect::DrainIntelligence => write!(f, "Drain Intelligence"),
+            Effect::DrainWillpower => write!(f, "Drain Willpower"),
+            Effect::DrainAgility => write!(f, "Drain Agility"),
+            Effect::DrainSpeed => write!(f, "Drain Speed"),
+            Effect::DrainEndurance => write!(f, "Drain Endurance"),
+            Effect::DrainPersonality => write!(f, "Drain Personality"),
+            Effect::DrainLuck => write!(f, "Drain Luck"),
+            Effect::DrainHealth => write!(f, "Drain Health"),
+            Effect::DrainMagicka => write!(f, "Drain Magicka"),
+            Effect::DrainFatigue => write!(f, "Drain Fatigue"),
+            Effect::FireDamage => write!(f, "Fire Damage"),
+            Effect::FrostDamage => write!(f, "Frost Damage"),
+            Effect::Paralyze => write!(f, "Paralyze"),
+            Effect::ShockDamage => write!(f, "Shock Damage"),
+            Effect::Silence => write!(f, "Silence"),
+            Effect::WeaknessToFire => write!(f, "Weakness To Fire"),
+        }
+    }
+}
+
+lazy_static! {
+    static ref EFFECTS: Vec<Effect> = {
+        let mut effects: Vec<Effect> = Effect::iter().collect();
+        effects.sort_by_key(|x| x.to_string());
+        effects
+    };
 }
 
 #[derive(Debug, Clone)]
@@ -87,197 +200,111 @@ impl Default for MyApp {
     }
 }
 
-use eframe::{egui, epi};
+use eframe::{egui::{self, ScrollArea, TextStyle}, epi};
 
-impl epi::App for MyApp{
+impl epi::App for MyApp {
     fn name(&self) -> &str {
         "Alchemy Tool"
     }
 
     fn update(&mut self, ctx: &egui::CtxRef, frame: &epi::Frame) {
-        let Self { ingredients, desired_effects, matching_ingredients } = self;
+        let Self {
+            ingredients,
+            desired_effects,
+            matching_ingredients,
+        } = self;
 
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("Alchemy Tool");
 
-            egui::ComboBox::from_label("First Effect")
-            .selected_text(format!("{:?}", desired_effects[0]))
-            .show_ui(ui, |ui| {
-                ui.selectable_value(&mut desired_effects[0], None, "None");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::Chameleon), "Chameleon");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::CureDisease),"Cure Disease");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::CureParalysis), "Cure Paralysis");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::CurePoison), "Cure Poison");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DetectLife), "Detect Life");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::Dispel), "Dispel");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::Feather), "Feather");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::FireShield), "Fire Shield");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::FortifyAttribute(Attribute::Strength)), "Fortify Strength");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::FortifyAttribute(Attribute::Intelligence)), "Fortify Intelligence");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::FortifyAttribute(Attribute::Willpower)), "Fortify Willpower");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::FortifyAttribute(Attribute::Agility)), "Fortify Agility");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::FortifyAttribute(Attribute::Speed)), "Fortify Speed");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::FortifyAttribute(Attribute::Endurance)), "Fortify Endurance");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::FortifyAttribute(Attribute::Personality)), "Fortify Personality");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::FortifyAttribute(Attribute::Luck)), "Fortify Luck");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Health)), "Fortify Health");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Magicka)), "Fortify Magicka");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Fatigue)), "Fortify Fatigue");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::FrostShield), "Frost Shield");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::Invisibility), "Invisibility");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::Light), "Light");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::NightEye), "Night Eye");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::ReflectDamage), "Reflect Damage");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::ReflectSpell), "Reflect Spell");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::ResistDisease), "Resist Disease");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::ResistFire), "Resist Fire");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::ResistFrost), "Resist Frost");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::ResistParalysis), "Resist Paralysis");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::ResistPoison), "Resist Poison");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::ResistShock), "Resist Shock");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::RestoreAttribute(Attribute::Strength)), "Restore Strength");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::RestoreAttribute(Attribute::Intelligence)), "Restore Intelligence");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::RestoreAttribute(Attribute::Willpower)), "Restore Willpower");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::RestoreAttribute(Attribute::Agility)), "Restore Agility");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::RestoreAttribute(Attribute::Speed)), "Restore Speed");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::RestoreAttribute(Attribute::Endurance)), "Restore Endurance");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::RestoreAttribute(Attribute::Personality)), "Restore Personality");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::RestoreAttribute(Attribute::Luck)), "Restore Luck");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), "Restore Health");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Magicka)), "Restore Magicka");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), "Restore Fatigue");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::Shield), "Shield");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::ShockShield), "Shock Shield");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::WaterBreathing), "Water Breathing");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::WaterWalking), "Water Walking");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::Burden), "Burden");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DamageAttribute(Attribute::Strength)), "Damage Strength");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DamageAttribute(Attribute::Intelligence)), "Damage Intelligence");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DamageAttribute(Attribute::Willpower)), "Damage Willpower");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DamageAttribute(Attribute::Agility)), "Damage Agility");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DamageAttribute(Attribute::Speed)), "Damage Speed");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DamageAttribute(Attribute::Endurance)), "Damage Endurance");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DamageAttribute(Attribute::Personality)), "Damage Personality");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DamageAttribute(Attribute::Luck)), "Damage Luck");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), "Damage Health");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka)), "Damage Magicka");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DamageDerivedAttribute(DerivedAttribute::Fatigue)), "Damage Fatigue");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DrainAttribute(Attribute::Strength)), "Drain Strength");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DrainAttribute(Attribute::Intelligence)), "Drain Intelligence");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DrainAttribute(Attribute::Willpower)), "Drain Willpower");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DrainAttribute(Attribute::Agility)), "Drain Agility");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DrainAttribute(Attribute::Speed)), "Drain Speed");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DrainAttribute(Attribute::Endurance)), "Drain Endurance");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DrainAttribute(Attribute::Personality)), "Drain Personality");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DrainAttribute(Attribute::Luck)), "Drain Luck");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DrainDerivedAttribute(DerivedAttribute::Health)), "Drain Health");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DrainDerivedAttribute(DerivedAttribute::Magicka)), "Drain Magicka");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::DrainDerivedAttribute(DerivedAttribute::Fatigue)), "Drain Fatigue");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::FireDamage), "Fire Damage");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::FrostDamage), "Frost Damage");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::Paralyze), "Paralyze");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::ShockDamage), "Shock Damage");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::Silence), "Silence");
-                ui.selectable_value(&mut desired_effects[0], Some(Effect::WeaknessToFire), "Weakness to Fire");
-            });
-            ui.end_row();
+            for (i, effect_label) in (0..4).zip(["First Effect", "Second Effect", "Third Effect", "Fourth Effect"]) {
+                egui::ComboBox::from_label(effect_label)
+                    .selected_text(format!("{:?}", desired_effects[i]))
+                    .show_ui(ui, |ui| {
+                        ui.selectable_value(
+                            &mut desired_effects[i],
+                            None,
+                            "None",
+                        );
+                        for effect in EFFECTS.iter().cloned() {
+                            ui.selectable_value(
+                                &mut desired_effects[i],
+                                Some(effect),
+                                effect.to_string(),
+                            );
+                        }
+                    });
+                
+                    ui.end_row();
+            }
 
-            egui::ComboBox::from_label("Second Effect")
-            .selected_text(format!("{:?}", desired_effects[1]))
-            .show_ui(ui, |ui| {
-                ui.selectable_value(&mut desired_effects[1], None, "None");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::Chameleon), "Chameleon");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::CureDisease),"Cure Disease");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::CureParalysis), "Cure Paralysis");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::CurePoison), "Cure Poison");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DetectLife), "Detect Life");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::Dispel), "Dispel");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::Feather), "Feather");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::FireShield), "Fire Shield");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::FortifyAttribute(Attribute::Strength)), "Fortify Strength");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::FortifyAttribute(Attribute::Intelligence)), "Fortify Intelligence");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::FortifyAttribute(Attribute::Willpower)), "Fortify Willpower");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::FortifyAttribute(Attribute::Agility)), "Fortify Agility");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::FortifyAttribute(Attribute::Speed)), "Fortify Speed");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::FortifyAttribute(Attribute::Endurance)), "Fortify Endurance");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::FortifyAttribute(Attribute::Personality)), "Fortify Personality");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::FortifyAttribute(Attribute::Luck)), "Fortify Luck");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Health)), "Fortify Health");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Magicka)), "Fortify Magicka");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Fatigue)), "Fortify Fatigue");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::FrostShield), "Frost Shield");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::Invisibility), "Invisibility");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::Light), "Light");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::NightEye), "Night Eye");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::ReflectDamage), "Reflect Damage");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::ReflectSpell), "Reflect Spell");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::ResistDisease), "Resist Disease");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::ResistFire), "Resist Fire");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::ResistFrost), "Resist Frost");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::ResistParalysis), "Resist Paralysis");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::ResistPoison), "Resist Poison");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::ResistShock), "Resist Shock");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::RestoreAttribute(Attribute::Strength)), "Restore Strength");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::RestoreAttribute(Attribute::Intelligence)), "Restore Intelligence");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::RestoreAttribute(Attribute::Willpower)), "Restore Willpower");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::RestoreAttribute(Attribute::Agility)), "Restore Agility");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::RestoreAttribute(Attribute::Speed)), "Restore Speed");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::RestoreAttribute(Attribute::Endurance)), "Restore Endurance");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::RestoreAttribute(Attribute::Personality)), "Restore Personality");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::RestoreAttribute(Attribute::Luck)), "Restore Luck");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), "Restore Health");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Magicka)), "Restore Magicka");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), "Restore Fatigue");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::Shield), "Shield");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::ShockShield), "Shock Shield");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::WaterBreathing), "Water Breathing");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::WaterWalking), "Water Walking");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::Burden), "Burden");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DamageAttribute(Attribute::Strength)), "Damage Strength");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DamageAttribute(Attribute::Intelligence)), "Damage Intelligence");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DamageAttribute(Attribute::Willpower)), "Damage Willpower");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DamageAttribute(Attribute::Agility)), "Damage Agility");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DamageAttribute(Attribute::Speed)), "Damage Speed");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DamageAttribute(Attribute::Endurance)), "Damage Endurance");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DamageAttribute(Attribute::Personality)), "Damage Personality");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DamageAttribute(Attribute::Luck)), "Damage Luck");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), "Damage Health");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka)), "Damage Magicka");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DamageDerivedAttribute(DerivedAttribute::Fatigue)), "Damage Fatigue");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DrainAttribute(Attribute::Strength)), "Drain Strength");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DrainAttribute(Attribute::Intelligence)), "Drain Intelligence");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DrainAttribute(Attribute::Willpower)), "Drain Willpower");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DrainAttribute(Attribute::Agility)), "Drain Agility");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DrainAttribute(Attribute::Speed)), "Drain Speed");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DrainAttribute(Attribute::Endurance)), "Drain Endurance");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DrainAttribute(Attribute::Personality)), "Drain Personality");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DrainAttribute(Attribute::Luck)), "Drain Luck");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DrainDerivedAttribute(DerivedAttribute::Health)), "Drain Health");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DrainDerivedAttribute(DerivedAttribute::Magicka)), "Drain Magicka");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::DrainDerivedAttribute(DerivedAttribute::Fatigue)), "Drain Fatigue");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::FireDamage), "Fire Damage");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::FrostDamage), "Frost Damage");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::Paralyze), "Paralyze");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::ShockDamage), "Shock Damage");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::Silence), "Silence");
-                ui.selectable_value(&mut desired_effects[1], Some(Effect::WeaknessToFire), "Weakness to Fire");
-            });
-            ui.end_row();
+            ui.separator();
+
             if ui.button("Find Ingredients").clicked() {
                 // Find Ingredients
-                matching_ingredients = ingredients
-                .iter()
-                .filter(|ingredient| {
-                    for desired_effect in desired_effects {
-                        if !ingredient.effects.contains(desired_effect) {
-                            return false;
+                *matching_ingredients = ingredients
+                    .iter()
+                    .filter(|ingredient| {
+                        for desired_effect in desired_effects.iter().cloned() {
+                            if desired_effect == None {
+                                continue;
+                            }
+                            // Only matching against one effect
+                            if ingredient.effects.contains(&desired_effect) {
+                                return true;
+                            }
+                            // if !ingredient.effects.contains(&desired_effect) {
+                            //     return false;
+                            // }
+                        }
+
+                        false
+                        // true
+                    })
+                    .cloned()
+                    .collect();
+
+                println!("{:#?}", matching_ingredients);
+            }
+
+            ui.separator();
+
+            ui.label("Matching Ingredients");
+            ui.end_row();
+            let num_rows = matching_ingredients.len();
+            ScrollArea::vertical().auto_shrink([false; 2]).show_rows(
+                ui,
+                ui.fonts()[TextStyle::Body].row_height(),
+                num_rows,
+                |ui, row_range| {
+                    for row in row_range {
+                        let text = format!("{:?}", matching_ingredients[row].name);
+                        if ui.selectable_label(false, text).hovered() {
+                            // Populate Display
+                            ui.separator();
+                            egui::Grid::new("Selected Ingredient").striped(true).show(ui, |ui| {
+                                ui.label("Name");
+                                ui.label("Item ID");
+                                ui.label("Description");
+                                ui.label("Value");
+                                ui.label("Weight");
+                                ui.label("Harvest Chance");
+                                ui.label("Effects");
+
+                                ui.end_row();
+
+                                ui.label(format!("{}", matching_ingredients[row].name));
+                                ui.label(format!("{}", matching_ingredients[row].id));
+                                ui.label(format!("{}", matching_ingredients[row].description));
+                                ui.label(format!("{}", matching_ingredients[row].value));
+                                ui.label(format!("{}", matching_ingredients[row].weight));
+                                ui.label(format!("{}", matching_ingredients[row].harvest_chance));
+                                ui.label(format!("{:?}", matching_ingredients[row].effects));
+                            });
                         }
                     }
-                
-                    true
-                })
-                .collect();
-            }
+                }
+            );
         });
 
         // Resize the native window to be just the size we need it to be:
@@ -285,50 +312,28 @@ impl epi::App for MyApp{
     }
 }
 
+/*struct Ingredient {
+    name: String,
+    id: String,
+    description: String,
+    value: u16,
+    weight: f32,
+    harvest_chance: f32,
+    effects: [Option<Effect>; 4],
+} */
+
 fn main() {
+    // Using strum to create an iterator on the FlatEffect enum
+    let all_flat_effects = {
+        let mut temp: Vec<Effect> = Effect::iter().collect();
+        temp.sort_by_key(|x| x.to_string());
+        temp
+    };
+
+    println!("{:?}", all_flat_effects);
+
     let options = eframe::NativeOptions::default();
     eframe::run_native(Box::new(MyApp::default()), options);
-
-    /*let ingredients = create_ingredients();
-
-    //println!("{:#?}", ingredients);
-
-    // Let's get chameleon ingredients
-    let chameleon: Vec<&Ingredient> = ingredients
-        .iter()
-        .filter(|ingredient| ingredient.effects.contains(&Some(Effect::Chameleon)))
-        .collect();
-
-    println!("{:?}", chameleon);
-
-    // Let's get chameleon ingredients and filter out everything but the names
-    let chameleon: Vec<String> = ingredients
-        .iter()
-        .filter(|ingredient| ingredient.effects.contains(&Some(Effect::Chameleon)))
-        .map(|ingredient| ingredient.name.clone())
-        .collect();
-
-    println!("{:#?}", chameleon);
-
-    let health_strength: Vec<String> = ingredients
-        .iter()
-        .filter(|ingredient| {
-            let desired_effects: Vec<&Option<Effect>> = vec![
-                &Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)),
-                &Some(Effect::FortifyAttribute(Attribute::Strength)),
-            ];
-            for desired_effect in desired_effects {
-                if !ingredient.effects.contains(desired_effect) {
-                    return false;
-                }
-            }
-
-            true
-        })
-        .map(|ingredient| ingredient.name.clone())
-        .collect();
-
-    println!("{:#?}", health_strength); */
 }
 
 fn create_ingredients() -> Vec<Ingredient> {
@@ -340,7 +345,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Intelligence)), Some(Effect::ResistPoison), Some(Effect::Light), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Fatigue))],
+        effects: [Some(Effect::RestoreIntelligence), Some(Effect::ResistPoison), Some(Effect::Light), Some(Effect::DamageFatigue)],
         },
         Ingredient {
             name: String::from("Aloe Vera Leaves"),
@@ -349,7 +354,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::Invisibility)],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::RestoreHealth), Some(Effect::DamageMagicka), Some(Effect::Invisibility)],
         },
         Ingredient {
             name: String::from("Ambrosia"),
@@ -358,7 +363,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 2u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), None, None, None],
+        effects: [Some(Effect::RestoreHealth), None, None, None],
         },
         Ingredient {
             name: String::from("Apple"),
@@ -367,7 +372,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.2f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::DamageAttribute(Attribute::Luck)), Some(Effect::FortifyAttribute(Attribute::Willpower)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::DamageLuck), Some(Effect::FortifyWillpower), Some(Effect::DamageHealth)],
         },
         Ingredient {
             name: String::from("Arrowroot"),
@@ -376,7 +381,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 2u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Agility)), Some(Effect::DamageAttribute(Attribute::Luck)), Some(Effect::FortifyAttribute(Attribute::Strength)), Some(Effect::Burden)],
+        effects: [Some(Effect::RestoreAgility), Some(Effect::DamageLuck), Some(Effect::FortifyStrength), Some(Effect::Burden)],
         },
         Ingredient {
             name: String::from("Beef"),
@@ -385,7 +390,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 1.0f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::Shield), Some(Effect::FortifyAttribute(Attribute::Agility)), Some(Effect::Dispel)],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::Shield), Some(Effect::FortifyAgility), Some(Effect::Dispel)],
         },
         Ingredient {
             name: String::from("Bergamot Seeds"),
@@ -394,7 +399,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::ResistDisease), Some(Effect::Dispel), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::Silence)],
+        effects: [Some(Effect::ResistDisease), Some(Effect::Dispel), Some(Effect::DamageMagicka), Some(Effect::Silence)],
         },
         Ingredient {
             name: String::from("Blackberry"),
@@ -403,7 +408,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::ResistShock), Some(Effect::FortifyAttribute(Attribute::Endurance)), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Magicka))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::ResistShock), Some(Effect::FortifyEndurance), Some(Effect::RestoreMagicka)],
         },
         Ingredient {
             name: String::from("Bloodgrass"),
@@ -412,7 +417,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::Chameleon), Some(Effect::ResistParalysis), Some(Effect::Burden), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::Chameleon), Some(Effect::ResistParalysis), Some(Effect::Burden), Some(Effect::FortifyHealth)],
         },
         Ingredient {
             name: String::from("Boar Meat"),
@@ -421,7 +426,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 20u16,
             weight: 2.0f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DamageAttribute(Attribute::Speed)), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Health)), Some(Effect::Burden)],
+        effects: [Some(Effect::RestoreHealth), Some(Effect::DamageSpeed), Some(Effect::FortifyHealth), Some(Effect::Burden)],
         },
         Ingredient {
             name: String::from("Bog Beacon Asco Cap"),
@@ -430,7 +435,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::Shield), Some(Effect::DamageAttribute(Attribute::Personality)), Some(Effect::DamageAttribute(Attribute::Endurance))],
+        effects: [Some(Effect::RestoreMagicka), Some(Effect::Shield), Some(Effect::DamagePersonality), Some(Effect::DamageEndurance)],
         },
         Ingredient {
             name: String::from("Bonemeal*"),
@@ -439,7 +444,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 5u16,
             weight: 0.2f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::DamageDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::ResistFire), Some(Effect::FortifyAttribute(Attribute::Luck)), Some(Effect::NightEye)],
+        effects: [Some(Effect::DamageFatigue), Some(Effect::ResistFire), Some(Effect::FortifyLuck), Some(Effect::NightEye)],
         },
         Ingredient {
             name: String::from("Bread Loaf"),
@@ -448,7 +453,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.5f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::DetectLife), Some(Effect::DamageAttribute(Attribute::Agility)), Some(Effect::DamageAttribute(Attribute::Strength))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::DetectLife), Some(Effect::DamageAgility), Some(Effect::DamageStrength)],
         },
         Ingredient {
             name: String::from("Cairn Bolete Cap"),
@@ -457,7 +462,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 33.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DamageAttribute(Attribute::Intelligence)), Some(Effect::ResistParalysis), Some(Effect::ShockDamage)],
+        effects: [Some(Effect::RestoreHealth), Some(Effect::DamageIntelligence), Some(Effect::ResistParalysis), Some(Effect::ShockDamage)],
         },
         Ingredient {
             name: String::from("Carrot"),
@@ -466,7 +471,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.2f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::NightEye), Some(Effect::FortifyAttribute(Attribute::Intelligence)), Some(Effect::DamageAttribute(Attribute::Endurance))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::NightEye), Some(Effect::FortifyIntelligence), Some(Effect::DamageEndurance)],
         },
         Ingredient {
             name: String::from("Cheese Wedge"),
@@ -475,7 +480,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.2f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::ResistFire), Some(Effect::FireShield), Some(Effect::DamageAttribute(Attribute::Agility))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::ResistFire), Some(Effect::FireShield), Some(Effect::DamageAgility)],
         },
         Ingredient {
             name: String::from("Cheese Wheel"),
@@ -484,7 +489,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 3.0f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::ResistParalysis), Some(Effect::DamageAttribute(Attribute::Luck)), Some(Effect::FortifyAttribute(Attribute::Willpower))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::ResistParalysis), Some(Effect::DamageLuck), Some(Effect::FortifyWillpower)],
         },
         Ingredient {
             name: String::from("Cinnabar Polypore Red Cap"),
@@ -493,7 +498,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 3u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Agility)), Some(Effect::Shield), Some(Effect::DamageAttribute(Attribute::Personality)), Some(Effect::DamageAttribute(Attribute::Endurance))],
+        effects: [Some(Effect::RestoreAgility), Some(Effect::Shield), Some(Effect::DamagePersonality), Some(Effect::DamageEndurance)],
         },
         Ingredient {
             name: String::from("Cinnabar Polypore Yellow Cap"),
@@ -502,7 +507,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 3u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Endurance)), Some(Effect::FortifyAttribute(Attribute::Endurance)), Some(Effect::DamageAttribute(Attribute::Personality)), Some(Effect::ReflectSpell)],
+        effects: [Some(Effect::RestoreEndurance), Some(Effect::FortifyEndurance), Some(Effect::DamagePersonality), Some(Effect::ReflectSpell)],
         },
         Ingredient {
             name: String::from("Clannfear Claws"),
@@ -511,7 +516,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 50u16,
             weight: 2.0f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::CureDisease), Some(Effect::ResistDisease), Some(Effect::Paralyze), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::CureDisease), Some(Effect::ResistDisease), Some(Effect::Paralyze), Some(Effect::DamageHealth)],
         },
         Ingredient {
             name: String::from("Clouded Funnel Cap"),
@@ -520,7 +525,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Intelligence)), Some(Effect::FortifyAttribute(Attribute::Intelligence)), Some(Effect::DamageAttribute(Attribute::Endurance)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka))],
+        effects: [Some(Effect::RestoreIntelligence), Some(Effect::FortifyIntelligence), Some(Effect::DamageEndurance), Some(Effect::DamageMagicka)],
         },
         Ingredient {
             name: String::from("Columbine Root Pulp"),
@@ -529,7 +534,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Personality)), Some(Effect::ResistFrost), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::Chameleon)],
+        effects: [Some(Effect::RestorePersonality), Some(Effect::ResistFrost), Some(Effect::FortifyMagicka), Some(Effect::Chameleon)],
         },
         Ingredient {
             name: String::from("Corn"),
@@ -538,7 +543,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.2f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::RestoreAttribute(Attribute::Intelligence)), Some(Effect::DamageAttribute(Attribute::Agility)), Some(Effect::ShockShield)],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::RestoreIntelligence), Some(Effect::DamageAgility), Some(Effect::ShockShield)],
         },
         Ingredient {
             name: String::from("Crab Meat"),
@@ -547,7 +552,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 1.0f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Endurance)), Some(Effect::ResistShock), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::FireShield)],
+        effects: [Some(Effect::RestoreEndurance), Some(Effect::ResistShock), Some(Effect::DamageFatigue), Some(Effect::FireShield)],
         },
         Ingredient {
             name: String::from("Daedra Heart"),
@@ -556,7 +561,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 25u16,
             weight: 2.0f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), Some(Effect::ShockShield), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::Silence)],
+        effects: [Some(Effect::RestoreHealth), Some(Effect::ShockShield), Some(Effect::DamageMagicka), Some(Effect::Silence)],
         },
         Ingredient {
             name: String::from("Daedra Silk"),
@@ -565,7 +570,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 75u16,
             weight: 0.5f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::Burden), Some(Effect::NightEye), Some(Effect::Chameleon), Some(Effect::DamageAttribute(Attribute::Endurance))],
+        effects: [Some(Effect::Burden), Some(Effect::NightEye), Some(Effect::Chameleon), Some(Effect::DamageEndurance)],
         },
         Ingredient {
             name: String::from("Daedra Venin"),
@@ -574,7 +579,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 75u16,
             weight: 0.2f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::Paralyze), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::ReflectDamage)],
+        effects: [Some(Effect::Paralyze), Some(Effect::RestoreFatigue), Some(Effect::DamageHealth), Some(Effect::ReflectDamage)],
         },
         Ingredient {
             name: String::from("Daedroth Teeth"),
@@ -592,7 +597,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 5u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::ResistFire), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), Some(Effect::FireShield)],
+        effects: [Some(Effect::ResistFire), Some(Effect::DamageHealth), Some(Effect::RestoreHealth), Some(Effect::FireShield)],
         },
         Ingredient {
             name: String::from("Dreugh Wax"),
@@ -601,7 +606,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 70u16,
             weight: 1.0f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::DamageDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::ResistPoison), Some(Effect::WaterBreathing), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::DamageFatigue), Some(Effect::ResistPoison), Some(Effect::WaterBreathing), Some(Effect::DamageHealth)],
         },
         Ingredient {
             name: String::from("Dryad Saddle Polypore Cap"),
@@ -610,7 +615,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 10u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Luck)), Some(Effect::ResistFrost), Some(Effect::DamageAttribute(Attribute::Speed)), Some(Effect::FrostDamage)],
+        effects: [Some(Effect::RestoreLuck), Some(Effect::ResistFrost), Some(Effect::DamageSpeed), Some(Effect::FrostDamage)],
         },
         Ingredient {
             name: String::from("Ectoplasm"),
@@ -619,7 +624,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 20u16,
             weight: 0.2f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::ShockDamage), Some(Effect::Dispel), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::ShockDamage), Some(Effect::Dispel), Some(Effect::FortifyMagicka), Some(Effect::DamageHealth)],
         },
         Ingredient {
             name: String::from("Elf Cup Cap"),
@@ -628,7 +633,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 5u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::DamageAttribute(Attribute::Willpower)), Some(Effect::CureDisease), Some(Effect::FortifyAttribute(Attribute::Strength)), Some(Effect::DamageAttribute(Attribute::Intelligence))],
+        effects: [Some(Effect::DamageWillpower), Some(Effect::CureDisease), Some(Effect::FortifyStrength), Some(Effect::DamageIntelligence)],
         },
         Ingredient {
             name: String::from("Emetic Russula Cap"),
@@ -637,7 +642,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 4u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Agility)), Some(Effect::Shield), Some(Effect::DamageAttribute(Attribute::Personality)), Some(Effect::DamageAttribute(Attribute::Endurance))],
+        effects: [Some(Effect::RestoreAgility), Some(Effect::Shield), Some(Effect::DamagePersonality), Some(Effect::DamageEndurance)],
         },
         Ingredient {
             name: String::from("Fennel Seeds"),
@@ -646,7 +651,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 5u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::DamageAttribute(Attribute::Intelligence)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::Paralyze)],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::DamageIntelligence), Some(Effect::DamageMagicka), Some(Effect::Paralyze)],
         },
         Ingredient {
             name: String::from("Fire Salts"),
@@ -655,7 +660,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 30u16,
             weight: 0.1f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::FireDamage), Some(Effect::ResistFrost), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::FireShield)],
+        effects: [Some(Effect::FireDamage), Some(Effect::ResistFrost), Some(Effect::RestoreMagicka), Some(Effect::FireShield)],
         },
         Ingredient {
             name: String::from("Flax Seeds"),
@@ -664,7 +669,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::Feather), Some(Effect::Shield), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::RestoreMagicka), Some(Effect::Feather), Some(Effect::Shield), Some(Effect::DamageHealth)],
         },
         Ingredient {
             name: String::from("Flour"),
@@ -673,7 +678,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.2f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::DamageAttribute(Attribute::Personality)), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::ReflectDamage)],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::DamagePersonality), Some(Effect::FortifyFatigue), Some(Effect::ReflectDamage)],
         },
         Ingredient {
             name: String::from("Fly Amanita Cap"),
@@ -682,7 +687,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Agility)), Some(Effect::Burden), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), Some(Effect::ShockDamage)],
+        effects: [Some(Effect::RestoreAgility), Some(Effect::Burden), Some(Effect::RestoreHealth), Some(Effect::ShockDamage)],
         },
         Ingredient {
             name: String::from("Foxglove Nectar"),
@@ -691,7 +696,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::ResistPoison), Some(Effect::ResistParalysis), Some(Effect::RestoreAttribute(Attribute::Luck)), Some(Effect::ResistDisease)],
+        effects: [Some(Effect::ResistPoison), Some(Effect::ResistParalysis), Some(Effect::RestoreLuck), Some(Effect::ResistDisease)],
         },
         Ingredient {
             name: String::from("Frost Salts"),
@@ -709,7 +714,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.0f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::ResistDisease), Some(Effect::DamageAttribute(Attribute::Agility)), Some(Effect::FrostShield), Some(Effect::FortifyAttribute(Attribute::Strength))],
+        effects: [Some(Effect::ResistDisease), Some(Effect::DamageAgility), Some(Effect::FrostShield), Some(Effect::FortifyStrength)],
         },
         Ingredient {
             name: String::from("Ginkgo Leaf"),
@@ -718,7 +723,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Speed)), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::DamageAttribute(Attribute::Luck)), Some(Effect::ShockDamage)],
+        effects: [Some(Effect::RestoreSpeed), Some(Effect::FortifyMagicka), Some(Effect::DamageLuck), Some(Effect::ShockDamage)],
         },
         Ingredient {
             name: String::from("Ginseng"),
@@ -727,7 +732,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 2u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::DamageAttribute(Attribute::Luck)), Some(Effect::CurePoison), Some(Effect::Burden), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Magicka))],
+        effects: [Some(Effect::DamageLuck), Some(Effect::CurePoison), Some(Effect::Burden), Some(Effect::FortifyMagicka)],
         },
         Ingredient {
             name: String::from("Glow Dust"),
@@ -736,7 +741,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 40u16,
             weight: 0.1f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Speed)), Some(Effect::Light), Some(Effect::ReflectSpell), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::RestoreSpeed), Some(Effect::Light), Some(Effect::ReflectSpell), Some(Effect::DamageHealth)],
         },
         Ingredient {
             name: String::from("Grapes"),
@@ -745,7 +750,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 2u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::WaterWalking), Some(Effect::Dispel), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::WaterWalking), Some(Effect::Dispel), Some(Effect::DamageHealth)],
         },
         Ingredient {
             name: String::from("Green Stain Cup Cap"),
@@ -754,7 +759,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::DamageAttribute(Attribute::Speed)), Some(Effect::ReflectDamage), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::DamageSpeed), Some(Effect::ReflectDamage), Some(Effect::DamageHealth)],
         },
         Ingredient {
             name: String::from("Green Stain Shelf Cap"),
@@ -763,7 +768,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 10u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Luck)), Some(Effect::FortifyAttribute(Attribute::Luck)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::RestoreLuck), Some(Effect::FortifyLuck), Some(Effect::DamageFatigue), Some(Effect::RestoreHealth)],
         },
         Ingredient {
             name: String::from("Ham"),
@@ -772,7 +777,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 1.0f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::DamageAttribute(Attribute::Luck))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::RestoreHealth), Some(Effect::DamageMagicka), Some(Effect::DamageLuck)],
         },
         Ingredient {
             name: String::from("Harrada"),
@@ -781,7 +786,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 2u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::Silence), Some(Effect::Paralyze)],
+        effects: [Some(Effect::DamageHealth), Some(Effect::DamageMagicka), Some(Effect::Silence), Some(Effect::Paralyze)],
         },
         Ingredient {
             name: String::from("Imp Gall"),
@@ -790,7 +795,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 15u16,
             weight: 0.2f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::FortifyAttribute(Attribute::Personality)), Some(Effect::CureParalysis), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::FireDamage)],
+        effects: [Some(Effect::FortifyPersonality), Some(Effect::CureParalysis), Some(Effect::DamageHealth), Some(Effect::FireDamage)],
         },
         Ingredient {
             name: String::from("Ironwood Nut"),
@@ -799,7 +804,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Intelligence)), Some(Effect::ResistFire), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::RestoreIntelligence), Some(Effect::ResistFire), Some(Effect::DamageFatigue), Some(Effect::FortifyHealth)],
         },
         Ingredient {
             name: String::from("Lady's Mantle Leaves"),
@@ -808,7 +813,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 5u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DamageAttribute(Attribute::Endurance)), Some(Effect::NightEye), Some(Effect::Feather)],
+        effects: [Some(Effect::RestoreHealth), Some(Effect::DamageEndurance), Some(Effect::NightEye), Some(Effect::Feather)],
         },
         Ingredient {
             name: String::from("Lady's Smock Leaves"),
@@ -817,7 +822,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Intelligence)), Some(Effect::ResistFire), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::RestoreIntelligence), Some(Effect::ResistFire), Some(Effect::DamageFatigue), Some(Effect::FortifyHealth)],
         },
         Ingredient {
             name: String::from("Lavender Sprig"),
@@ -826,7 +831,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Personality)), Some(Effect::FortifyAttribute(Attribute::Willpower)), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DamageAttribute(Attribute::Luck))],
+        effects: [Some(Effect::RestorePersonality), Some(Effect::FortifyWillpower), Some(Effect::RestoreHealth), Some(Effect::DamageLuck)],
         },
         Ingredient {
             name: String::from("Leek"),
@@ -835,7 +840,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 3u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::FortifyAttribute(Attribute::Agility)), Some(Effect::DamageAttribute(Attribute::Personality)), Some(Effect::DamageAttribute(Attribute::Strength))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::FortifyAgility), Some(Effect::DamagePersonality), Some(Effect::DamageStrength)],
         },
         Ingredient {
             name: String::from("Lettuce"),
@@ -844,7 +849,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.5f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::RestoreAttribute(Attribute::Luck)), Some(Effect::FireShield), Some(Effect::DamageAttribute(Attribute::Personality))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::RestoreLuck), Some(Effect::FireShield), Some(Effect::DamagePersonality)],
         },
         Ingredient {
             name: String::from("Lichor"),
@@ -853,7 +858,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 3u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Magicka)), None, None, None],
+        effects: [Some(Effect::RestoreMagicka), None, None, None],
         },
         Ingredient {
             name: String::from("Mandrake Root"),
@@ -862,7 +867,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::CureDisease), Some(Effect::ResistPoison), Some(Effect::DamageAttribute(Attribute::Agility)), Some(Effect::FortifyAttribute(Attribute::Willpower))],
+        effects: [Some(Effect::CureDisease), Some(Effect::ResistPoison), Some(Effect::DamageAgility), Some(Effect::FortifyWillpower)],
         },
         Ingredient {
             name: String::from("Milk Thistle Seeds"),
@@ -880,7 +885,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 55u16,
             weight: 5.0f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Willpower)), Some(Effect::Burden), Some(Effect::FortifyAttribute(Attribute::Endurance)), Some(Effect::ResistParalysis)],
+        effects: [Some(Effect::RestoreWillpower), Some(Effect::Burden), Some(Effect::FortifyEndurance), Some(Effect::ResistParalysis)],
         },
         Ingredient {
             name: String::from("Monkshood Root Pulp"),
@@ -889,7 +894,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Strength)), Some(Effect::DamageAttribute(Attribute::Intelligence)), Some(Effect::FortifyAttribute(Attribute::Endurance)), Some(Effect::Burden)],
+        effects: [Some(Effect::RestoreStrength), Some(Effect::DamageIntelligence), Some(Effect::FortifyEndurance), Some(Effect::Burden)],
         },
         Ingredient {
             name: String::from("Morning Glory Root Pulp"),
@@ -898,7 +903,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::Burden), Some(Effect::DamageAttribute(Attribute::Willpower)), Some(Effect::FrostShield), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka))],
+        effects: [Some(Effect::Burden), Some(Effect::DamageWillpower), Some(Effect::FrostShield), Some(Effect::DamageMagicka)],
         },
         Ingredient {
             name: String::from("Mort Flesh"),
@@ -907,7 +912,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 10u16,
             weight: 2.0f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::DamageDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::DamageAttribute(Attribute::Luck)), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Health)), Some(Effect::Silence)],
+        effects: [Some(Effect::DamageFatigue), Some(Effect::DamageLuck), Some(Effect::FortifyHealth), Some(Effect::Silence)],
         },
         Ingredient {
             name: String::from("Motherwort Sprig"),
@@ -916,7 +921,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::ResistPoison), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::Silence), Some(Effect::Invisibility)],
+        effects: [Some(Effect::ResistPoison), Some(Effect::DamageFatigue), Some(Effect::Silence), Some(Effect::Invisibility)],
         },
         Ingredient {
             name: String::from("Mugwort Seeds"),
@@ -925,7 +930,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), None, None, None],
+        effects: [Some(Effect::RestoreHealth), None, None, None],
         },
         Ingredient {
             name: String::from("Mutton"),
@@ -934,7 +939,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 2u16,
             weight: 2.0f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::Dispel), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka))],
+        effects: [Some(Effect::FortifyHealth), Some(Effect::DamageFatigue), Some(Effect::Dispel), Some(Effect::DamageMagicka)],
         },
         Ingredient {
             name: String::from("Nightshade"),
@@ -943,7 +948,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::Burden), Some(Effect::DamageAttribute(Attribute::Luck)), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Magicka))],
+        effects: [Some(Effect::DamageHealth), Some(Effect::Burden), Some(Effect::DamageLuck), Some(Effect::FortifyMagicka)],
         },
         Ingredient {
             name: String::from("Ogre's Teeth"),
@@ -952,7 +957,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 75u16,
             weight: 3.0f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::DamageAttribute(Attribute::Intelligence)), Some(Effect::ResistParalysis), Some(Effect::ShockDamage), Some(Effect::FortifyAttribute(Attribute::Strength))],
+        effects: [Some(Effect::DamageIntelligence), Some(Effect::ResistParalysis), Some(Effect::ShockDamage), Some(Effect::FortifyStrength)],
         },
         Ingredient {
             name: String::from("Onion"),
@@ -961,7 +966,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.2f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::WaterBreathing), Some(Effect::DetectLife), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::WaterBreathing), Some(Effect::DetectLife), Some(Effect::DamageHealth)],
         },
         Ingredient {
             name: String::from("Orange"),
@@ -970,7 +975,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 2u16,
             weight: 0.2f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::DetectLife), Some(Effect::Burden), Some(Effect::Shield)],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::DetectLife), Some(Effect::Burden), Some(Effect::Shield)],
         },
         Ingredient {
             name: String::from("Pear"),
@@ -979,7 +984,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.2f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::DamageAttribute(Attribute::Speed)), Some(Effect::FortifyAttribute(Attribute::Speed)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::DamageSpeed), Some(Effect::FortifySpeed), Some(Effect::DamageHealth)],
         },
         Ingredient {
             name: String::from("Peony Seeds"),
@@ -988,7 +993,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Strength)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DamageAttribute(Attribute::Speed)), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue))],
+        effects: [Some(Effect::RestoreStrength), Some(Effect::DamageHealth), Some(Effect::DamageSpeed), Some(Effect::RestoreFatigue)],
         },
         Ingredient {
             name: String::from("Potato"),
@@ -997,7 +1002,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.2f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::Shield), Some(Effect::Burden), Some(Effect::FrostShield)],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::Shield), Some(Effect::Burden), Some(Effect::FrostShield)],
         },
         Ingredient {
             name: String::from("Primrose Leaves"),
@@ -1006,7 +1011,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 3u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Willpower)), Some(Effect::RestoreAttribute(Attribute::Personality)), Some(Effect::FortifyAttribute(Attribute::Luck)), Some(Effect::DamageAttribute(Attribute::Strength))],
+        effects: [Some(Effect::RestoreWillpower), Some(Effect::RestorePersonality), Some(Effect::FortifyLuck), Some(Effect::DamageStrength)],
         },
         Ingredient {
             name: String::from("Pumpkin"),
@@ -1015,7 +1020,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 2u16,
             weight: 5.0f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::DamageAttribute(Attribute::Agility)), Some(Effect::DamageAttribute(Attribute::Personality)), Some(Effect::DetectLife)],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::DamageAgility), Some(Effect::DamagePersonality), Some(Effect::DetectLife)],
         },
         Ingredient {
             name: String::from("Purgeblood SaltsVL"),
@@ -1024,7 +1029,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 0u16,
             weight: 0.4f32,
             harvest_chance: 100.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::Dispel)],
+        effects: [Some(Effect::RestoreMagicka), Some(Effect::DamageHealth), Some(Effect::FortifyMagicka), Some(Effect::Dispel)],
         },
         Ingredient {
             name: String::from("Radish"),
@@ -1033,7 +1038,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::DamageAttribute(Attribute::Endurance)), Some(Effect::Chameleon), Some(Effect::Burden)],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::DamageEndurance), Some(Effect::Chameleon), Some(Effect::Burden)],
         },
         Ingredient {
             name: String::from("Rat Meat"),
@@ -1042,7 +1047,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.5f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::DamageDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::DetectLife), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::Silence)],
+        effects: [Some(Effect::DamageFatigue), Some(Effect::DetectLife), Some(Effect::DamageMagicka), Some(Effect::Silence)],
         },
         Ingredient {
             name: String::from("Redwort Flower"),
@@ -1051,7 +1056,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 4u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::ResistFrost), Some(Effect::CurePoison), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::Invisibility)],
+        effects: [Some(Effect::ResistFrost), Some(Effect::CurePoison), Some(Effect::DamageHealth), Some(Effect::Invisibility)],
         },
         Ingredient {
             name: String::from("Rice"),
@@ -1060,7 +1065,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.2f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::Silence), Some(Effect::ShockShield), Some(Effect::DamageAttribute(Attribute::Agility))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::Silence), Some(Effect::ShockShield), Some(Effect::DamageAgility)],
         },
         Ingredient {
             name: String::from("Root Pulp"),
@@ -1069,7 +1074,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::CureDisease), Some(Effect::DamageAttribute(Attribute::Willpower)), Some(Effect::FortifyAttribute(Attribute::Strength)), Some(Effect::DamageAttribute(Attribute::Intelligence))],
+        effects: [Some(Effect::CureDisease), Some(Effect::DamageWillpower), Some(Effect::FortifyStrength), Some(Effect::DamageIntelligence)],
         },
         Ingredient {
             name: String::from("Sacred Lotus Seeds"),
@@ -1078,7 +1083,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::ResistFrost), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::Feather), Some(Effect::Dispel)],
+        effects: [Some(Effect::ResistFrost), Some(Effect::DamageHealth), Some(Effect::Feather), Some(Effect::Dispel)],
         },
         Ingredient {
             name: String::from("Scales"),
@@ -1087,7 +1092,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 5u16,
             weight: 0.1f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::DamageAttribute(Attribute::Willpower)), Some(Effect::WaterBreathing), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::WaterWalking)],
+        effects: [Some(Effect::DamageWillpower), Some(Effect::WaterBreathing), Some(Effect::DamageHealth), Some(Effect::WaterWalking)],
         },
         Ingredient {
             name: String::from("Scamp Skin"),
@@ -1096,7 +1101,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 10u16,
             weight: 1.5f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::ResistShock), Some(Effect::ReflectDamage), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::DamageMagicka), Some(Effect::ResistShock), Some(Effect::ReflectDamage), Some(Effect::DamageHealth)],
         },
         Ingredient {
             name: String::from("Shepherd's Pie"),
@@ -1105,7 +1110,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 0u16,
             weight: 1.0f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::CureDisease), Some(Effect::Shield), Some(Effect::FortifyAttribute(Attribute::Agility)), Some(Effect::Dispel)],
+        effects: [Some(Effect::CureDisease), Some(Effect::Shield), Some(Effect::FortifyAgility), Some(Effect::Dispel)],
         },
         Ingredient {
             name: String::from("S'jirra's Famous Potato Bread"),
@@ -1114,7 +1119,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 30u16,
             weight: 0.5f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::DetectLife), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DamageAttribute(Attribute::Agility)), Some(Effect::DamageAttribute(Attribute::Strength))],
+        effects: [Some(Effect::DetectLife), Some(Effect::RestoreHealth), Some(Effect::DamageAgility), Some(Effect::DamageStrength)],
         },
         Ingredient {
             name: String::from("Somnalius Frond"),
@@ -1123,7 +1128,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 3u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Speed)), Some(Effect::DamageAttribute(Attribute::Endurance)), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Health)), Some(Effect::Feather)],
+        effects: [Some(Effect::RestoreSpeed), Some(Effect::DamageEndurance), Some(Effect::FortifyHealth), Some(Effect::Feather)],
         },
         Ingredient {
             name: String::from("Spiddal Stick"),
@@ -1132,7 +1137,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 2u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::FireDamage), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue))],
+        effects: [Some(Effect::DamageHealth), Some(Effect::DamageMagicka), Some(Effect::FireDamage), Some(Effect::RestoreFatigue)],
         },
         Ingredient {
             name: String::from("St. Jahn's Wort Nectar"),
@@ -1141,7 +1146,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 5u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::ResistShock), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::CurePoison), Some(Effect::Chameleon)],
+        effects: [Some(Effect::ResistShock), Some(Effect::DamageHealth), Some(Effect::CurePoison), Some(Effect::Chameleon)],
         },
         Ingredient {
             name: String::from("Steel-Blue Entoloma Cap"),
@@ -1150,7 +1155,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::FireDamage), Some(Effect::ResistFrost), Some(Effect::Burden)],
+        effects: [Some(Effect::RestoreMagicka), Some(Effect::FireDamage), Some(Effect::ResistFrost), Some(Effect::Burden)],
         },
         Ingredient {
             name: String::from("Stinkhorn Cap"),
@@ -1159,7 +1164,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 3u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::WaterWalking), Some(Effect::Invisibility)],
+        effects: [Some(Effect::DamageHealth), Some(Effect::RestoreMagicka), Some(Effect::WaterWalking), Some(Effect::Invisibility)],
         },
         Ingredient {
             name: String::from("Strawberry"),
@@ -1168,7 +1173,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::CurePoison), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::ReflectDamage)],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::CurePoison), Some(Effect::DamageHealth), Some(Effect::ReflectDamage)],
         },
         Ingredient {
             name: String::from("Summer Bolete Cap"),
@@ -1177,7 +1182,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Agility)), Some(Effect::Shield), Some(Effect::DamageAttribute(Attribute::Personality)), Some(Effect::DamageAttribute(Attribute::Endurance))],
+        effects: [Some(Effect::RestoreAgility), Some(Effect::Shield), Some(Effect::DamagePersonality), Some(Effect::DamageEndurance)],
         },
         Ingredient {
             name: String::from("Sweetcake"),
@@ -1186,7 +1191,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.2f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::Feather), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), Some(Effect::Burden)],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::Feather), Some(Effect::RestoreHealth), Some(Effect::Burden)],
         },
         Ingredient {
             name: String::from("Sweetroll"),
@@ -1195,7 +1200,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.2f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::ResistDisease), Some(Effect::DamageAttribute(Attribute::Personality)), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::ResistDisease), Some(Effect::DamagePersonality), Some(Effect::FortifyHealth)],
         },
         Ingredient {
             name: String::from("Taproot"),
@@ -1204,7 +1209,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.3f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Luck)), Some(Effect::DamageAttribute(Attribute::Endurance)), Some(Effect::ResistPoison), Some(Effect::ShockShield)],
+        effects: [Some(Effect::RestoreLuck), Some(Effect::DamageEndurance), Some(Effect::ResistPoison), Some(Effect::ShockShield)],
         },
         Ingredient {
             name: String::from("Tiger Lily Nectar"),
@@ -1213,7 +1218,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 3u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Endurance)), Some(Effect::DamageAttribute(Attribute::Strength)), Some(Effect::WaterWalking), Some(Effect::DamageAttribute(Attribute::Willpower))],
+        effects: [Some(Effect::RestoreEndurance), Some(Effect::DamageStrength), Some(Effect::WaterWalking), Some(Effect::DamageWillpower)],
         },
         Ingredient {
             name: String::from("Tinder Polypore Cap"),
@@ -1222,7 +1227,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Willpower)), Some(Effect::ResistDisease), Some(Effect::Invisibility), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka))],
+        effects: [Some(Effect::RestoreWillpower), Some(Effect::ResistDisease), Some(Effect::Invisibility), Some(Effect::DamageMagicka)],
         },
         Ingredient {
             name: String::from("Tobacco"),
@@ -1231,7 +1236,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 5u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::ResistParalysis), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::Dispel)],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::ResistParalysis), Some(Effect::DamageMagicka), Some(Effect::Dispel)],
         },
         Ingredient {
             name: String::from("Tomato"),
@@ -1240,7 +1245,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 2u16,
             weight: 0.2f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::DetectLife), Some(Effect::Burden), Some(Effect::Shield)],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::DetectLife), Some(Effect::Burden), Some(Effect::Shield)],
         },
         Ingredient {
             name: String::from("Troll Fat"),
@@ -1249,7 +1254,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 25u16,
             weight: 2.0f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::DamageAttribute(Attribute::Agility)), Some(Effect::FortifyAttribute(Attribute::Personality)), Some(Effect::DamageAttribute(Attribute::Willpower)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::DamageAgility), Some(Effect::FortifyPersonality), Some(Effect::DamageWillpower), Some(Effect::DamageHealth)],
         },
         Ingredient {
             name: String::from("Vampire Dust*"),
@@ -1267,7 +1272,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 2.0f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), Some(Effect::Feather), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::Chameleon)],
+        effects: [Some(Effect::RestoreHealth), Some(Effect::Feather), Some(Effect::DamageHealth), Some(Effect::Chameleon)],
         },
         Ingredient {
             name: String::from("Viper's Bugloss Leaves"),
@@ -1285,7 +1290,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 30u16,
             weight: 0.4f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::Dispel)],
+        effects: [Some(Effect::RestoreMagicka), Some(Effect::DamageHealth), Some(Effect::FortifyMagicka), Some(Effect::Dispel)],
         },
         Ingredient {
             name: String::from("Water Hyacinth Nectar"),
@@ -1294,7 +1299,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 2u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::DamageAttribute(Attribute::Luck)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Magicka))],
+        effects: [Some(Effect::DamageLuck), Some(Effect::DamageFatigue), Some(Effect::RestoreMagicka), Some(Effect::FortifyMagicka)],
         },
         Ingredient {
             name: String::from("Watermelon"),
@@ -1303,7 +1308,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 2u16,
             weight: 5.0f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::Light), Some(Effect::Burden), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::Light), Some(Effect::Burden), Some(Effect::DamageHealth)],
         },
         Ingredient {
             name: String::from("Wheat Grain"),
@@ -1312,7 +1317,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.2f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DamageAttribute(Attribute::Personality))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::DamageMagicka), Some(Effect::FortifyHealth), Some(Effect::DamagePersonality)],
         },
         Ingredient {
             name: String::from("White Seed Pod"),
@@ -1321,7 +1326,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 5u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Strength)), Some(Effect::WaterBreathing), Some(Effect::Silence), Some(Effect::Light)],
+        effects: [Some(Effect::RestoreStrength), Some(Effect::WaterBreathing), Some(Effect::Silence), Some(Effect::Light)],
         },
         Ingredient {
             name: String::from("Wisp Stalk Caps"),
@@ -1330,7 +1335,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 33.0f32,
-        effects: [Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DamageAttribute(Attribute::Willpower)), Some(Effect::DamageAttribute(Attribute::Intelligence)), Some(Effect::FortifyAttribute(Attribute::Speed))],
+        effects: [Some(Effect::DamageHealth), Some(Effect::DamageWillpower), Some(Effect::DamageIntelligence), Some(Effect::FortifySpeed)],
         },
         Ingredient {
             name: String::from("Wormwood Leaves"),
@@ -1339,7 +1344,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 2u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::Invisibility), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka))],
+        effects: [Some(Effect::FortifyFatigue), Some(Effect::Invisibility), Some(Effect::DamageHealth), Some(Effect::DamageMagicka)],
         },
         // Shivering Isles
         Ingredient {
@@ -1349,7 +1354,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.25f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::Light), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::Light), Some(Effect::RestoreHealth), Some(Effect::DamageMagicka)],
         },
         Ingredient {
             name: String::from("Ashen Remains"),
@@ -1358,7 +1363,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 5u16,
             weight: 0.8f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::DamageAttribute(Attribute::Luck)), Some(Effect::Silence), Some(Effect::WeaknessToFire)],
+        effects: [Some(Effect::FortifyFatigue), Some(Effect::DamageLuck), Some(Effect::Silence), Some(Effect::WeaknessToFire)],
         },
         Ingredient {
             name: String::from("Aster Bloom Core"),
@@ -1367,7 +1372,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Agility)), Some(Effect::Dispel), Some(Effect::Shield), Some(Effect::Burden)],
+        effects: [Some(Effect::RestoreAgility), Some(Effect::Dispel), Some(Effect::Shield), Some(Effect::Burden)],
         },
         Ingredient {
             name: String::from("Black Tar"),
@@ -1376,7 +1381,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::DamageDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::DamageAttribute(Attribute::Speed)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::ShockDamage)],
+        effects: [Some(Effect::DamageFatigue), Some(Effect::DamageSpeed), Some(Effect::DamageHealth), Some(Effect::ShockDamage)],
         },
         Ingredient {
             name: String::from("Blister Pod Cap"),
@@ -1385,7 +1390,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 66.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::NightEye), Some(Effect::Invisibility)],
+        effects: [Some(Effect::RestoreMagicka), Some(Effect::FortifyMagicka), Some(Effect::NightEye), Some(Effect::Invisibility)],
         },
         Ingredient {
             name: String::from("Bone Marrow"),
@@ -1394,7 +1399,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 2u16,
             weight: 0.1f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::FrostDamage), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::Paralyze)],
+        effects: [Some(Effect::DamageHealth), Some(Effect::FrostDamage), Some(Effect::DamageMagicka), Some(Effect::Paralyze)],
         },
         Ingredient {
             name: String::from("Bone Shard"),
@@ -1403,7 +1408,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.3f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Willpower)), Some(Effect::FrostShield), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::DamageAttribute(Attribute::Luck))],
+        effects: [Some(Effect::RestoreWillpower), Some(Effect::FrostShield), Some(Effect::DamageMagicka), Some(Effect::DamageLuck)],
         },
         Ingredient {
             name: String::from("Congealed Putrescence"),
@@ -1412,7 +1417,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 66.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Strength)), Some(Effect::FireDamage), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::RestoreStrength), Some(Effect::FireDamage), Some(Effect::RestoreMagicka), Some(Effect::DamageHealth)],
         },
         Ingredient {
             name: String::from("Elytra Ichor"),
@@ -1421,7 +1426,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 3u16,
             weight: 0.1f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::Burden), Some(Effect::Chameleon), Some(Effect::Silence)],
+        effects: [Some(Effect::RestoreMagicka), Some(Effect::Burden), Some(Effect::Chameleon), Some(Effect::Silence)],
         },
         Ingredient {
             name: String::from("Flame Stalk 0001B6AE /"),
@@ -1430,7 +1435,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 33.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), Some(Effect::FireDamage), Some(Effect::FrostShield), Some(Effect::Invisibility)],
+        effects: [Some(Effect::RestoreHealth), Some(Effect::FireDamage), Some(Effect::FrostShield), Some(Effect::Invisibility)],
         },
         Ingredient {
             name: String::from("Fungus Stalk"),
@@ -1439,7 +1444,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Strength)), Some(Effect::WaterWalking), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Health)), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Magicka))],
+        effects: [Some(Effect::RestoreStrength), Some(Effect::WaterWalking), Some(Effect::FortifyHealth), Some(Effect::RestoreMagicka)],
         },
         Ingredient {
             name: String::from("Gnarl Bark"),
@@ -1448,7 +1453,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Endurance)), Some(Effect::Shield), Some(Effect::FireShield), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::RestoreEndurance), Some(Effect::Shield), Some(Effect::FireShield), Some(Effect::DamageHealth)],
         },
         Ingredient {
             name: String::from("Grummite Eggs"),
@@ -1457,7 +1462,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.5f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::Dispel), Some(Effect::Chameleon), Some(Effect::Silence)],
+        effects: [Some(Effect::DamageMagicka), Some(Effect::Dispel), Some(Effect::Chameleon), Some(Effect::Silence)],
         },
         Ingredient {
             name: String::from("Hound Tooth"),
@@ -1475,7 +1480,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 4u16,
             weight: 0.1f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::CurePoison), Some(Effect::CureDisease), Some(Effect::FireDamage), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Magicka))],
+        effects: [Some(Effect::CurePoison), Some(Effect::CureDisease), Some(Effect::FireDamage), Some(Effect::FortifyMagicka)],
         },
         Ingredient {
             name: String::from("Hydnum Azure Giant Spore"),
@@ -1484,7 +1489,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.5f32,
             harvest_chance: 66.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Endurance)), Some(Effect::DetectLife), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Health)), Some(Effect::FrostShield)],
+        effects: [Some(Effect::RestoreEndurance), Some(Effect::DetectLife), Some(Effect::FortifyHealth), Some(Effect::FrostShield)],
         },
         Ingredient {
             name: String::from("Letifer Orca Digestive Slime"),
@@ -1493,7 +1498,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 66.0f32,
-        effects: [Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue))],
+        effects: [Some(Effect::DamageHealth), Some(Effect::DamageFatigue), Some(Effect::DamageMagicka), Some(Effect::RestoreFatigue)],
         },
         Ingredient {
             name: String::from("Red Kelp Gas Bladder"),
@@ -1502,7 +1507,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 50.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Speed)), Some(Effect::WaterBreathing), Some(Effect::CureDisease), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Magicka))],
+        effects: [Some(Effect::RestoreSpeed), Some(Effect::WaterBreathing), Some(Effect::CureDisease), Some(Effect::FortifyMagicka)],
         },
         Ingredient {
             name: String::from("Rot Scale"),
@@ -1511,7 +1516,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 33.0f32,
-        effects: [Some(Effect::Burden), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::Silence), Some(Effect::Paralyze)],
+        effects: [Some(Effect::Burden), Some(Effect::DamageHealth), Some(Effect::Silence), Some(Effect::Paralyze)],
         },
         Ingredient {
             name: String::from("Scalon Fin"),
@@ -1520,7 +1525,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::WaterBreathing), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::ShockDamage), Some(Effect::Burden)],
+        effects: [Some(Effect::WaterBreathing), Some(Effect::DamageHealth), Some(Effect::ShockDamage), Some(Effect::Burden)],
         },
         Ingredient {
             name: String::from("Screaming Maw"),
@@ -1529,7 +1534,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 66.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Willpower)), Some(Effect::DetectLife), Some(Effect::Chameleon), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::RestoreWillpower), Some(Effect::DetectLife), Some(Effect::Chameleon), Some(Effect::RestoreHealth)],
         },
         Ingredient {
             name: String::from("Smoked Baliwog Leg"),
@@ -1538,7 +1543,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 2u16,
             weight: 1.0f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::Feather), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DamageDerivedAttribute(DerivedAttribute::Fatigue))],
+        effects: [Some(Effect::RestoreFatigue), Some(Effect::Feather), Some(Effect::RestoreHealth), Some(Effect::DamageFatigue)],
         },
         Ingredient {
             name: String::from("Swamp Tentacle"),
@@ -1547,7 +1552,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 2u16,
             weight: 0.2f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Personality)), Some(Effect::WaterBreathing), Some(Effect::WaterWalking), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::RestorePersonality), Some(Effect::WaterBreathing), Some(Effect::WaterWalking), Some(Effect::FortifyHealth)],
         },
         Ingredient {
             name: String::from("Thorn Hook"),
@@ -1556,7 +1561,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 33.0f32,
-        effects: [Some(Effect::DamageDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DamageAttribute(Attribute::Luck)), Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Health))],
+        effects: [Some(Effect::DamageHealth), Some(Effect::DamageLuck), Some(Effect::RestoreMagicka), Some(Effect::FortifyHealth)],
         },
         Ingredient {
             name: String::from("Unrefined Greenmote"),
@@ -1565,7 +1570,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.5f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::DrainDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::DrainDerivedAttribute(DerivedAttribute::Health)), Some(Effect::DrainDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::DrainAttribute(Attribute::Intelligence))],
+        effects: [Some(Effect::DrainFatigue), Some(Effect::DrainHealth), Some(Effect::DrainMagicka), Some(Effect::DrainIntelligence)],
         },
         Ingredient {
             name: String::from("Void Essence"),
@@ -1574,7 +1579,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 50u16,
             weight: 0.2f32,
             harvest_chance: 0.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Health)), Some(Effect::FortifyAttribute(Attribute::Strength)), Some(Effect::FortifyAttribute(Attribute::Endurance))],
+        effects: [Some(Effect::RestoreHealth), Some(Effect::FortifyHealth), Some(Effect::FortifyStrength), Some(Effect::FortifyEndurance)],
         },
         Ingredient {
             name: String::from("Watcher's Eye"),
@@ -1583,7 +1588,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.2f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Intelligence)), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::Light), Some(Effect::ReflectSpell)],
+        effects: [Some(Effect::RestoreIntelligence), Some(Effect::FortifyMagicka), Some(Effect::Light), Some(Effect::ReflectSpell)],
         },
         Ingredient {
             name: String::from("Water Root Pod Pit"),
@@ -1592,7 +1597,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 3u16,
             weight: 1.0f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Health)), Some(Effect::ResistFire), Some(Effect::FireShield), Some(Effect::WaterBreathing)],
+        effects: [Some(Effect::RestoreHealth), Some(Effect::ResistFire), Some(Effect::FireShield), Some(Effect::WaterBreathing)],
         },
         Ingredient {
             name: String::from("Wisp Core"),
@@ -1601,7 +1606,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 2u16,
             weight: 0.1f32,
             harvest_chance: 25.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Intelligence)), Some(Effect::Burden), Some(Effect::Light), Some(Effect::Chameleon)],
+        effects: [Some(Effect::RestoreIntelligence), Some(Effect::Burden), Some(Effect::Light), Some(Effect::Chameleon)],
         },
         Ingredient {
             name: String::from("Withering Moon"),
@@ -1610,7 +1615,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.1f32,
             harvest_chance: 33.0f32,
-        effects: [Some(Effect::RestoreDerivedAttribute(DerivedAttribute::Magicka)), Some(Effect::Shield), Some(Effect::CureDisease), Some(Effect::ReflectSpell)],
+        effects: [Some(Effect::RestoreMagicka), Some(Effect::Shield), Some(Effect::CureDisease), Some(Effect::ReflectSpell)],
         },
         Ingredient {
             name: String::from("Worm's Head Cap"),
@@ -1619,7 +1624,7 @@ fn create_ingredients() -> Vec<Ingredient> {
             value: 1u16,
             weight: 0.2f32,
             harvest_chance: 80.0f32,
-        effects: [Some(Effect::RestoreAttribute(Attribute::Luck)), Some(Effect::NightEye), Some(Effect::FortifyDerivedAttribute(DerivedAttribute::Fatigue)), Some(Effect::Paralyze)],
+        effects: [Some(Effect::RestoreLuck), Some(Effect::NightEye), Some(Effect::FortifyFatigue), Some(Effect::Paralyze)],
         },
     ]
 }

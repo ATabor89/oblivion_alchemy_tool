@@ -9,3 +9,8 @@ edition = "2021"
 
 # Used for GUI
 eframe = "0.16.0" # Gives us egui, epi and web+native backends
+
+strum = { version = "0.24", features = ["derive"] }
+strum_macros = "0.24"
+
+lazy_static = "1.4.0"
